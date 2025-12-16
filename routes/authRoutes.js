@@ -1,4 +1,4 @@
-import { login } from "../handler/auth/login";
+import { login } from "../handler/auth/login.js";
 import express from "express";
 
 const router = express.Router();
