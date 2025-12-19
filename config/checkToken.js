@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-const checkToken = (token) => {
+export const checkToken = (token) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     return { valid: true, expired: false, decoded };
@@ -12,5 +12,3 @@ const checkToken = (token) => {
   }
 };
 
-
-export default checkToken;
