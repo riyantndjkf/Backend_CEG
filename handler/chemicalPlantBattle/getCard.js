@@ -1,5 +1,5 @@
 import db from "../../config/database.js";
-import { checkToken, isBlacklisted } from "../../utils/tokenUtils.js";
+import { checkToken, isBlacklisted } from "../../config/checkToken.js";
 
 export const getCard = async (req, res) => {
   try {
