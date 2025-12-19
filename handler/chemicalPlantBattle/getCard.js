@@ -1,4 +1,5 @@
 import db from "../../config/database.js";
+import { checkToken, isBlacklisted } from "../../utils/tokenUtils.js";
 
 export const getCard = async (req, res) => {
   try {
@@ -44,15 +45,15 @@ export const getCard = async (req, res) => {
       });
     }
     const card = rows[0];
-     return res.status(200).json({
-       success: true,
-       message: "Login Berhasil",
-       data: {
-         id: user.id,
-         tim: user.nama_tim,
-         cards:card,
-       },
-     });
+    return res.status(200).json({
+      success: true,
+      message: "Login Berhasil",
+      data: {
+        id: user.id,
+        tim: user.nama_tim,
+        cards: card,
+      },
+    });
   } catch (error) {
     console.error("ERROR GET CARD:", error);
     return res.status(500).json({
