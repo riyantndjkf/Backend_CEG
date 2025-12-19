@@ -41,10 +41,9 @@ export const getCard = async (req, res) => {
       });
     }
 
-    const [rows] = await db.execute(
-      "SELECT * FROM card WHERE user_id = ?",
-      [userId]
-    );
+    const [rows] = await db.execute("SELECT * FROM card WHERE user_id = ?", [
+      userId,
+    ]);
 
     if (rows.length === 0) {
       return res.status(404).json({
@@ -53,6 +52,7 @@ export const getCard = async (req, res) => {
       });
     }
     const card = rows[0];
+
     return res.status(200).json({
       success: true,
       message: "Berhasil mendapatkan kartu awal!",
