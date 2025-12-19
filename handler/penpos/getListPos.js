@@ -1,9 +1,8 @@
 import db from "../../config/database.js";
 import { checkToken } from "../../config/checkToken.js";
 
-export const updateUserPos = async (req, res) => {
+export const getListTeam = async (req, res) => {
   try {
-    const current_pos = req.body.current_pos;
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({
@@ -28,17 +27,26 @@ export const updateUserPos = async (req, res) => {
       });
     }
 
-    await db.execute("UPDATE user SET current_pos = ?, status = `MENUNGGU` WHERE id = ?", [
-      current_pos,
-      userId,
-    ]);
+    const [rows] = await db.execute("SELECT * FROM pos_game")
+
+    if (rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Gagal mendapatkan list pos!",
+      });
+    }
+
+    const list_pos = rows;
 
     return res.status(200).json({
       success: true,
-      message: "Berhasil update current pos & status peserta!",
+      message: "Berhasil mendapatkan list pos!",
+      data: {
+        pos: list_pos,
+      },
     });
   } catch (error) {
-    console.error("ERROR UPDATE POS:", error);
+    console.error("ERROR GET LIST POS:", error);
     return res.status(500).json({
       success: false,
       message: "Terjadi kesalahan server: " + error.message,
