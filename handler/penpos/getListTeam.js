@@ -41,7 +41,7 @@ export const getListTeam = async (req, res) => {
         message: "Tidak ada tim yang bermain!",
       });
     }
-    const list_tim = rows[0];
+    const list_tim = rows;
     return res.status(200).json({
       success: true,
       message: "Berhasil mendapatkan tim!",
