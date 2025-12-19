@@ -1,6 +1,6 @@
 // BACKEND/handler/auth/login.js
 
-import db from "../../database.js";
+import db from "../../config/database.js";
 
 export const login = async (req, res) => {
   // 1. Cek data yang dikirim frontend
