@@ -1,7 +1,7 @@
 import db from "../../config/database.js";
 import { checkToken } from "../../config/checkToken.js";
 
-export const getCard = async (req, res) => {
+export const getPos = async (req, res) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -26,30 +26,29 @@ export const getCard = async (req, res) => {
         message: "ID pengguna tidak ditemukan.",
       });
     }
-
     const [rows] = await db.execute(
-      "SELECT c.asam_kuat, c.asam_lemah, c.netral, c.basa_kuat, c.asam_lemah FROM user u INNER JOIN card c ON u.id = c.user_id WHERE u.id = ?",
+      "SELECT * FROM pos_game WHERE penpos_id = ?",
       [userId]
     );
 
     if (rows.length === 0) {
       return res.status(404).json({
         success: false,
-        message: "Tim tidak ditemukan!",
+        message: "Pos tidak ditemukan!",
       });
     }
-    const card = rows[0];
+    const pos = rows[0];
     return res.status(200).json({
       success: true,
-      message: "Berhasil mendapatkan kartu awal!",
+      message: "Berhasil mendapatkan posisi penpos!",
       data: {
         id: decoded.id,
         tim: decoded.tim,
-        cards: card,
+        pos: pos,
       },
     });
   } catch (error) {
-    console.error("ERROR GET CARD:", error);
+    console.error("ERROR GET POS:", error);
     return res.status(500).json({
       success: false,
       message: "Terjadi kesalahan server: " + error.message,
