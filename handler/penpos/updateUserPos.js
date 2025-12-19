@@ -1,8 +1,9 @@
 import db from "../../config/database.js";
 import { checkToken } from "../../config/checkToken.js";
 
-export const getCard = async (req, res) => {
+export const updateUserPos = async (req, res) => {
   try {
+    const current_pos = req.body.current_pos;
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({
@@ -27,43 +28,17 @@ export const getCard = async (req, res) => {
       });
     }
 
-    const { game_session_id } = req.body;
-
-    const [findGameSession] = await db.execute(
-      "SELECT * FROM game_session WHERE id = ? && end_time IS NULL",
-      [game_session_id]
-    );
-
-    if (findGameSession.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "Game session tidak ditemukan atau sudah berakhir!",
-      });
-    }
-
-    const [rows] = await db.execute("SELECT * FROM card WHERE user_id = ?", [
+    await db.execute("UPDATE user SET current_pos = ?, status = `MENUNGGU` WHERE id = ?", [
+      current_pos,
       userId,
     ]);
 
-    if (rows.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "Card tidak ditemukan!",
-      });
-    }
-    const card = rows[0];
-
     return res.status(200).json({
       success: true,
-      message: "Berhasil mendapatkan kartu awal!",
-      data: {
-        id: decoded.id,
-        tim: decoded.tim,
-        cards: card,
-      },
+      message: "Berhasil update current pos & status peserta!",
     });
   } catch (error) {
-    console.error("ERROR GET CARD:", error);
+    console.error("ERROR UPDATE POS:", error);
     return res.status(500).json({
       success: false,
       message: "Terjadi kesalahan server: " + error.message,
