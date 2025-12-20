@@ -1,22 +1,40 @@
 import { Server } from "socket.io";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
 
 export const initServer = (server, db) => {
   const io = new Server(server, {
     cors: { origin: "*" },
   });
 
+  io.use((socket, next) => {
+    try {
+      const token = socket.handshake.auth.token;
+      if (!token) throw new Error("No token");
+
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      userId = decoded.id;
+
+      next();
+    } catch (err) {
+      next(new Error("Unauthorized"));
+    }
+  });
+
   io.on("connection", (socket) => {
     console.log("Device connected:", socket.id);
 
-    socket.on("join-game", async ({ game_session_id, user_id }) => {
+    socket.on("join-game", async ({ game_session_id, pos_game_id }) => {
+      const userId = socket.userId;
       const [session] = await db.execute(
-        "SELECT tim1_id, tim2_id FROM game_session WHERE id = ? AND end_time IS NULL",
-        [game_session_id]
+        "SELECT tim1_id, tim2_id FROM game_session WHERE id = ? && pos_game_id = ? && end_time IS NULL",
+        [game_session_id, pos_game_id]
       );
 
       if (
         session.length === 0 ||
-        ![session[0].tim1_id, session[0].tim2_id].includes(user_id)
+        ![session[0].tim1_id, session[0].tim2_id].includes(userId)
       ) {
         return socket.emit("error", "Tidak berhak join game");
       }
@@ -26,11 +44,12 @@ export const initServer = (server, db) => {
     });
 
     // SELECT CARD
-    socket.on("select-card", async ({ game_session_id, user_id, card_id }) => {
+    socket.on("select-card", async ({ game_session_id, card_id }) => {
       // 1️⃣ validasi kartu milik user
+      const userId = socket.userId;
       const [card] = await db.execute(
         "SELECT id FROM card WHERE id = ? AND user_id = ?",
-        [card_id, user_id]
+        [card_id, userId]
       );
 
       if (card.length === 0) {
