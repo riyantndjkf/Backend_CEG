@@ -11,7 +11,6 @@ export const login = async (req, res) => {
 
   const { nama, password } = req.body;
 
-  
   try {
     // 2. Query ke Database
     // PERHATIKAN: 'nama_tim' harus sesuai nama kolom di database kamu
