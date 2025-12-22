@@ -6,6 +6,7 @@ import chemicalBattleRoutes from "./routes/chemicalBattleRoutes.js";
 import penposRoutes from "./routes/penposRoutes.js";
 import gameSessionRoutes from "./routes/gameSessionRoutes.js";
 import posRoutes from "./routes/posRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 const app = express();
 const PORT = 5000;
@@ -25,7 +26,7 @@ app.use("/chemical-battle", chemicalBattleRoutes);
 app.use("/penpos", penposRoutes);
 app.use("/game-session", gameSessionRoutes);
 app.use("/pos", posRoutes);
-app.use("")
+app.use("/user", userRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
