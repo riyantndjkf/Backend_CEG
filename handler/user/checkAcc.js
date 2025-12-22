@@ -27,11 +27,9 @@ export const checkAcc = async (req, res) => {
       });
     }
 
-    const pos_id = req.body.pos_id;
-
     const [game_session] = await db.execute(
-      "SELECT id FROM game_session WHERE pos_game_id = ? AND end_time IS NULL",
-      [pos_id]
+      "SELECT g.id FROM user u INNER JOIN pos_game p ON u.current_pos = p.id INNER JOIN game_session g ON p.id = g.pos_game_id WHERE u.id = ? AND g.end_time IS NULL 	",
+      [userId]
     );
 
     if (game_session.length === 0) {
@@ -46,7 +44,6 @@ export const checkAcc = async (req, res) => {
       message: "Game dimulai!",
       data: game_session[0].id,
     });
-
   } catch (error) {
     console.error("ERROR CHECK ACC:", error);
     return res.status(500).json({

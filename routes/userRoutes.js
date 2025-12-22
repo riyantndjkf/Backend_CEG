@@ -20,7 +20,7 @@ router.post("/abn/get-ready-card", getReadyCard);
 
 router.post("/abn/get-selected-card", getSelectedCard);
 
-router.post("/check-acc", checkAcc);
+router.get("/check-acc", checkAcc);
 
 router.get("/exit-waiting-room", exitWaitingRoom);
 
