@@ -37,6 +37,13 @@ export const createGameSession = async (req, res) => {
     if (pos[0].tipe === "BATTLE") {
       const { tim1, tim2 } = req.body;
 
+      if (!tim1 || !tim2) {
+        return res.status(400).json({
+          success: false,
+          message: "tim1 dan tim2 wajib dikirim",
+        });
+      }
+
       await db.execute("UPDATE pos_game SET status = 'BERMAIN' WHERE id = ?", [
         pos[0].id,
       ]);
@@ -69,7 +76,14 @@ export const createGameSession = async (req, res) => {
         },
       });
     } else if (pos[0].tipe === "SINGLE") {
-      const tim1 = req.body;
+      const { tim1 } = req.body;
+
+      if (!tim1) {
+        return res.status(400).json({
+          success: false,
+          message: "tim1 wajib dikirim",
+        });
+      }
 
       await db.execute("UPDATE pos_game SET status = 'BERMAIN' WHERE id = ?", [
         pos[0].id,
