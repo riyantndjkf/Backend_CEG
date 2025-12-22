@@ -28,7 +28,7 @@ export const updateUserPos = async (req, res) => {
       });
     }
 
-    await db.execute("UPDATE user SET current_pos = ?, status = `KOSONG` WHERE id = ?", [
+    await db.execute("UPDATE user SET current_pos = ?, status = 'MENUNGGU' WHERE id = ?", [
       current_pos,
       userId,
     ]);
