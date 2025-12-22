@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get("/get-pos", getPos);
 
-router.post("/get-list-team", getListTeam);
+router.get("/get-list-team", getListTeam);
 
 router.post("/create-game-session", createGameSession);
 

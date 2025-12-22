@@ -3,7 +3,6 @@ import { checkToken } from "../../config/checkToken.js";
 
 export const getListTeam = async (req, res) => {
   try {
-    const current_pos = req.body.current_pos;
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({
@@ -14,7 +13,7 @@ export const getListTeam = async (req, res) => {
     const token = authHeader.split(" ")[1];
     const { valid, expired, decoded } = checkToken(token);
     const userId = decoded.id;
-
+    
     if (!valid) {
       return res.status(401).json({
         success: false,
@@ -27,6 +26,8 @@ export const getListTeam = async (req, res) => {
         message: "ID pengguna tidak ditemukan.",
       });
     }
+    
+    const current_pos = req.query.current_pos;
 
     const [list_tim] = await db.execute(
       "SELECT u.id, u.nama_tim, p.penpos_id, p.name_pos FROM user u INNER JOIN pos_game p ON u.current_pos = p.id WHERE u.current_pos = ?",
