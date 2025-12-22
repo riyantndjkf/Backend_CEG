@@ -36,10 +36,24 @@ const battleTable = {
   },
 };
 
-export const checkBattleResult = (cardA, cardB) => {
-  if (!battleTable[cardA] || !battleTable[cardA][cardB]) {
+const reverseResult = (result) => {
+  if (result === "menang") return "kalah";
+  if (result === "kalah") return "menang";
+  return "seri";
+};
+
+export const checkBattleResult = (tim1, card1, tim2, card2) => {
+  if (!battleTable[card1] || !battleTable[card1][card2]) {
     throw new Error("Jenis kartu tidak valid");
   }
 
-  return battleTable[cardA][cardB];
+  const resultCard1 = battleTable[card1][card2];
+  const resultCard2 = reverseResult(resultCard1);
+
+  return {
+    tim1: tim1,
+    card1: resultCard1,
+    tim2: tim2,
+    card2: resultCard2,
+  };
 };

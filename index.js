@@ -2,10 +2,7 @@ import express from "express";
 import cors from "cors";
 
 import authRoutes from "./routes/authRoutes.js";
-import chemicalBattleRoutes from "./routes/chemicalBattleRoutes.js";
 import penposRoutes from "./routes/penposRoutes.js";
-import gameSessionRoutes from "./routes/gameSessionRoutes.js";
-import posRoutes from "./routes/posRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 
 const app = express();
@@ -22,10 +19,8 @@ app.get("/", (req, res) => {
 
 // Ini berarti url loginnya jadi: http://localhost:5000/auth/login
 app.use("/auth", authRoutes);
-app.use("/chemical-battle", chemicalBattleRoutes);
+// app.use("/admin",)
 app.use("/penpos", penposRoutes);
-app.use("/game-session", gameSessionRoutes);
-app.use("/pos", posRoutes);
 app.use("/user", userRoutes);
 
 app.listen(PORT, () => {
