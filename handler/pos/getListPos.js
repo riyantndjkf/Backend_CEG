@@ -42,7 +42,7 @@ export const getListPos = async (req, res) => {
       success: true,
       message: "Berhasil mendapatkan list pos!",
       data: {
-        pos: list_pos,
+        list_pos,
       },
     });
   } catch (error) {
