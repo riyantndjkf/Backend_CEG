@@ -27,7 +27,7 @@ export const getListTeam = async (req, res) => {
       });
     }
     
-    const current_pos = req.query.current_pos;
+    const current_pos = req.query.currentPos;
 
     const [list_tim] = await db.execute(
       "SELECT u.id, u.nama_tim, p.penpos_id, p.name_pos FROM user u INNER JOIN pos_game p ON u.current_pos = p.id WHERE u.current_pos = ?",
