@@ -5,6 +5,7 @@ import { getReadyCard } from "../handler/user/getReadyCard.js";
 import { getCard } from "../handler/user/getCard.js";
 import { exitWaitingRoom } from "../handler/user/exitWaitingRoom.js";
 import { checkAcc } from "../handler/user/checkAcc.js";
+import { getUserInfo } from "../handler/user/getUserInfo.js";
 import express from "express";
 
 const router = express.Router();
@@ -22,5 +23,7 @@ router.post("/abn/get-selected-card", getSelectedCard);
 router.post("/check-acc", checkAcc);
 
 router.get("/exit-waiting-room", exitWaitingRoom);
+
+router.get("/get-user-info", getUserInfo);
 
 export default router;
