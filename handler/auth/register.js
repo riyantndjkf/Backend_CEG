@@ -19,7 +19,7 @@ export const register = async (req, res) => {
       members,           // Array berisi 3 anggota
     } = req.body;
 
-    // 1. Validasi input dasar
+    // Validasi input dasar
     if (!nama_tim || !password || !asal_sekolah) {
       return res.status(400).json({
         success: false,
@@ -34,7 +34,7 @@ export const register = async (req, res) => {
       });
     }
 
-    // 2. Cek duplikasi nama tim
+    // Cek duplikasi nama tim
     const [existingUser] = await db.execute(
       "SELECT id FROM user WHERE nama_tim = ?",
       [nama_tim]
@@ -47,7 +47,7 @@ export const register = async (req, res) => {
       });
     }
 
-    // 3. Insert ke tabel user
+    // Insert ke tabel user
     const [insertUser] = await db.execute(
       `INSERT INTO user (nama_tim, password, role)
        VALUES (?, ?, 'PESERTA')`,
@@ -56,7 +56,7 @@ export const register = async (req, res) => {
 
     const newUserId = insertUser.insertId;
 
-    // 4. Insert ke tabel tim
+    // Insert ke tabel tim
     const timParams = [
       newUserId,
       email ?? null,
@@ -91,7 +91,7 @@ export const register = async (req, res) => {
       timParams
     );
 
-    // 5. Insert anggota ke tabel member
+    // Insert anggota ke tabel member
     const memberPromises = members.map((member) => {
       const memberParams = [
         newUserId,
@@ -125,7 +125,7 @@ export const register = async (req, res) => {
 
     await Promise.all(memberPromises);
 
-    // 6. Response sukses
+    // Response sukses
     return res.status(201).json({
       success: true,
       message: "Selamat, pendaftaran tim berhasil.",
