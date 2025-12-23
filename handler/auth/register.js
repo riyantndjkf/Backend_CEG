@@ -10,17 +10,17 @@ export const register = async (req, res) => {
       asal_sekolah,
       no_wa,
       id_line,
-      kategori_biaya,       // ENUM: 'EARLY_BIRD', 'NORMAL'
-      paket,                // ENUM: 'SINGLE', 'BUNDLE'
+      kategori_biaya, // ENUM: 'EARLY_BIRD', 'NORMAL'
+      paket, // ENUM: 'SINGLE', 'BUNDLE'
       bukti_pembayaran,
-      members               // Array of 3 anggota
+      members, // Array of 3 anggota
     } = req.body;
 
     // Validasi data tim
     if (!nama_tim || !password || !asal_sekolah) {
       return res.status(400).json({
         success: false,
-        message: "Nama tim, password, dan asal sekolah wajib diisi."
+        message: "Nama tim, password, dan asal sekolah wajib diisi.",
       });
     }
 
@@ -28,7 +28,7 @@ export const register = async (req, res) => {
     if (!Array.isArray(members) || members.length !== 3) {
       return res.status(400).json({
         success: false,
-        message: "Jumlah anggota tim wajib 3 orang."
+        message: "Jumlah anggota tim wajib 3 orang.",
       });
     }
 
@@ -40,7 +40,7 @@ export const register = async (req, res) => {
     if (existingTim.length > 0) {
       return res.status(409).json({
         success: false,
-        message: "Nama tim sudah terdaftar."
+        message: "Nama tim sudah terdaftar.",
       });
     }
 
@@ -59,7 +59,7 @@ export const register = async (req, res) => {
         id_line,
         kategori_biaya,
         paket,
-        bukti_pembayaran
+        bukti_pembayaran,
       ]
     );
     const tim_id = insertTim.insertId;
@@ -93,7 +93,7 @@ export const register = async (req, res) => {
           member.bukti_follow_tkubaya,
           member.alergi,
           member.penyakit_bawaan,
-          member.pola_makan // ENUM: 'NORMAL', 'VEGETARIAN', 'VEGAN'
+          member.pola_makan, // ENUM: 'NORMAL', 'VEGETARIAN', 'VEGAN'
         ]
       );
     }
@@ -105,15 +105,14 @@ export const register = async (req, res) => {
       data: {
         id_tim: tim_id,
         nama_tim,
-        jumlah_anggota: members.length
-      }
+        jumlah_anggota: members.length,
+      },
     });
-
   } catch (error) {
     console.error("ERROR REGISTER:", error);
     return res.status(500).json({
       success: false,
-      message: "Terjadi kesalahan server: " + error.message
+      message: "Terjadi kesalahan server: " + error.message,
     });
   }
 };
