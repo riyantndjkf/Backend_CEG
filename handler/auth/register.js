@@ -62,10 +62,10 @@ export const register = async (req, res) => {
 
     await db.execute(
       `INSERT INTO tim (
-        user_id, nama_tim, email, asal_sekolah, no_wa, id_line,
+        user_id, email, asal_sekolah, no_wa, id_line,
         kategori_biaya, paket, bukti_pembayaran,
         status_pembayaran, notes, total_points, total_coin, status
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'unverified', '', 0, 0, 'KOSONG')`,
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'unverified', '', 0, 0, 'KOSONG')`,
       [
         newUserId, // user_id (FK dari user.id)
         nama_tim, // Disimpan lagi di tim sesuai struktur SQL
