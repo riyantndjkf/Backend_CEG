@@ -1,5 +1,7 @@
+// BACKEND/handler/auth/register.js
+
 import db from "../../config/database.js";
-//import bcrypt from "bcrypt"; // Uncomment jika ingin mengaktifkan hashing
+// import bcrypt from "bcrypt"; // aktifkan jika ingin hashing password
 
 export const register = async (req, res) => {
   try {
@@ -10,13 +12,14 @@ export const register = async (req, res) => {
       asal_sekolah,
       no_wa,
       id_line,
-      kategori_biaya,
-      paket,
-      bukti_pembayaran,
-      members,
+      kategori_biaya,    // ENUM: 'EARLY_BIRD','NORMAL'
+      paket,             // ENUM: 'SINGLE','BUNDLE'
+      bukti_pembayaran,  // VARCHAR(200)
+      status_pembayaran, // ENUM: 'verified','unverified'
+      members,           // Array berisi 3 anggota
     } = req.body;
 
-    // 1. Validasi Input Dasar
+    // 1. Validasi input dasar
     if (!nama_tim || !password || !asal_sekolah) {
       return res.status(400).json({
         success: false,
@@ -31,7 +34,7 @@ export const register = async (req, res) => {
       });
     }
 
-    // 2. Cek Duplikasi Nama Tim (Cek di tabel USER karena itu master datanya)
+    // 2. Cek duplikasi nama tim
     const [existingUser] = await db.execute(
       "SELECT id FROM user WHERE nama_tim = ?",
       [nama_tim]
@@ -44,31 +47,37 @@ export const register = async (req, res) => {
       });
     }
 
-    // ==================================================================
-    // STEP 3: INSERT KE TABEL USER (PARENT)
-    // Kita harus insert ke user dulu untuk mendapatkan ID (Auto Increment)
-    // ==================================================================
-
-    // const hashedPassword = await bcrypt.hash(password, 10); // Gunakan ini jika bcrypt aktif
-
+    // 3. Insert ke tabel user
     const [insertUser] = await db.execute(
-      `INSERT INTO user (
-        nama_tim, password, role
-      ) VALUES (?, ?, 'PESERTA')`,
-      [nama_tim, password] // Ganti 'password' dengan 'hashedPassword' jika bcrypt aktif
+      `INSERT INTO user (nama_tim, password, role)
+       VALUES (?, ?, 'PESERTA')`,
+      [nama_tim, password] // gunakan hashedPassword jika bcrypt aktif
     );
 
     const newUserId = insertUser.insertId;
 
+    // 4. Insert ke tabel tim
+    const timParams = [
+      newUserId,
+      email ?? null,
+      asal_sekolah,
+      no_wa ?? null,
+      id_line ?? null,
+      kategori_biaya,
+      paket,
+      bukti_pembayaran ?? null,
+      status_pembayaran ?? null,
+    ];
+
+    console.log("TIM PARAMS:", timParams);
+
     await db.execute(
       `INSERT INTO tim (
-        user_id, email, asal_sekolah, no_wa, id_line,
-        kategori_biaya, paket, bukti_pembayaran,
-        status_pembayaran, notes, total_points, total_coin, status
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'unverified', '', 0, 0, 'KOSONG')`,
-      [
-        newUserId, // user_id (FK dari user.id)
-        nama_tim, // Disimpan lagi di tim sesuai struktur SQL
+        user_id,
+        pos_game_id,
+        total_points,
+        total_coin,
+        status,
         email,
         asal_sekolah,
         no_wa,
@@ -76,37 +85,52 @@ export const register = async (req, res) => {
         kategori_biaya,
         paket,
         bukti_pembayaran,
-      ]
+        status_pembayaran,
+        notes
+      ) VALUES (?, NULL, 0, 0, 'KOSONG', ?, ?, ?, ?, ?, ?, ?, ?, '')`,
+      timParams
     );
+
+    // 5. Insert anggota ke tabel member
     const memberPromises = members.map((member) => {
+      const memberParams = [
+        newUserId,
+        member.nama_anggota,
+        member.pas_foto ?? null,
+        member.kartu_pelajar ?? null,
+        member.bukti_follow_ceg ?? null,
+        member.bukti_follow_tkubaya ?? null,
+        member.alergi ?? null,
+        member.penyakit_bawaan ?? null,
+        member.pola_makan, // ENUM: 'NORMAL','VEGETARIAN','VEGAN'
+      ];
+
+      console.log("MEMBER PARAMS:", memberParams);
+
       return db.execute(
         `INSERT INTO member (
-          tim_user_id, nama_anggota, pas_foto, kartu_pelajar,
-          bukti_follow_ceg, bukti_follow_tkubaya,
-          alergi, penyakit_bawaan, pola_makan
+          tim_user_id,
+          nama_anggota,
+          pas_foto,
+          kartu_pelajar,
+          bukti_follow_ceg,
+          bukti_follow_tkubaya,
+          alergi,
+          penyakit_bawaan,
+          pola_makan
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        [
-          newUserId,
-          member.nama_anggota,
-          member.pas_foto,
-          member.kartu_pelajar,
-          member.bukti_follow_ceg,
-          member.bukti_follow_tkubaya,
-          member.alergi,
-          member.penyakit_bawaan,
-          member.pola_makan,
-        ]
+        memberParams
       );
     });
 
     await Promise.all(memberPromises);
 
-    // Response Sukses
+    // 6. Response sukses
     return res.status(201).json({
       success: true,
       message: "Selamat, pendaftaran tim berhasil.",
       data: {
-        id_tim: newUserId,
+        id_user: newUserId,
         nama_tim,
         jumlah_anggota: members.length,
       },
