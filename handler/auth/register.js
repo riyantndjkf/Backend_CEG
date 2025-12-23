@@ -1,5 +1,5 @@
 import db from "../../config/database.js";
-import bcrypt from "bcrypt";
+//import bcrypt from "bcrypt";
 
 export const register = async (req, res) => {
   try {
@@ -65,7 +65,7 @@ export const register = async (req, res) => {
     const tim_id = insertTim.insertId;
 
     // Hash password sebelum disimpan
-    const hashedPassword = await bcrypt.hash(password, 10);
+    //const hashedPassword = await bcrypt.hash(password, 10);
 
     // Simpan akun login ke tabel user
     await db.execute(
@@ -73,7 +73,7 @@ export const register = async (req, res) => {
         nama_tim, password, role,
         current_pos, total_points, total_coin, status
       ) VALUES (?, ?, 'PESERTA', 0, 0, 0, 'KOSONG')`,
-      [nama_tim, hashedPassword]
+      [nama_tim, password]
     );
 
     // Simpan data anggota ke tabel member
