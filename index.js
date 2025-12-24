@@ -12,7 +12,8 @@ import userRoutes from "./routes/userRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 
 const app = express();
-const PORT = 5000;
+//const PORT = 5000;
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
@@ -40,5 +41,5 @@ app.use("/user", userRoutes);
 app.use("/admin", adminRoutes);
 
 app.listen(PORT, () => {
-  console.log(`Server berjalan di http://localhost:${PORT}`);
+  console.log(`Server berjalan di port ${PORT}`);
 });
