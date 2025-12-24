@@ -30,7 +30,7 @@ export const createGameSession = async (req, res) => {
     }
 
     const [pos] = await db.execute(
-      "SELECT id, tipe FROM pos_game WHERE penpos_id = ?",
+      "SELECT penpos_id, tipe FROM pos_game WHERE penpos_id = ?",
       [userId]
     );
 
@@ -44,18 +44,19 @@ export const createGameSession = async (req, res) => {
         });
       }
 
-      await db.execute("UPDATE pos_game SET status = 'BERMAIN' WHERE id = ?", [
-        pos[0].id,
-      ]);
+      await db.execute(
+        "UPDATE pos_game SET status = 'BERMAIN' WHERE penpos_id = ?",
+        [pos[0].penpos_id]
+      );
 
       await db.execute(
-        "UPDATE user SET status = 'BERMAIN' WHERE id IN (?, ?)",
+        "UPDATE tim SET status = 'BERMAIN' WHERE user_id IN (?, ?)",
         [tim1, tim2]
       );
 
       const [game_session] = await db.execute(
-        "INSERT INTO game_session (`pos_game_id`, `tim1_id`, `tim2_id`, `start_time`, `score1`, `score2`) VALUES (?, ?, ?, NOW(), 0, 0)",
-        [pos[0].id, tim1, tim2]
+        "INSERT INTO game_session (`penpos_id`, `tim_id1`, `tim_id2`, `start_time`, `score1`, `score2`) VALUES (?, ?, ?, NOW(), 0, 0)",
+        [pos[0].penpos_id, tim1, tim2]
       );
 
       if (game_session.length === 0) {
@@ -70,7 +71,7 @@ export const createGameSession = async (req, res) => {
         message: "Berhasil membuat game session!",
         data: {
           id: gameSessionId,
-          pos_id: pos[0].id,
+          pos_id: pos[0].penpos_id,
           id_tim1: tim1,
           id_tim2: tim2,
         },
@@ -85,17 +86,18 @@ export const createGameSession = async (req, res) => {
         });
       }
 
-      await db.execute("UPDATE pos_game SET status = 'BERMAIN' WHERE id = ?", [
-        pos[0].id,
-      ]);
+      await db.execute(
+        "UPDATE pos_game SET status = 'BERMAIN' WHERE penpos_id = ?",
+        [pos[0].penpos_id]
+      );
 
-      await db.execute("UPDATE user SET status = 'BERMAIN' WHERE id = ?", [
+      await db.execute("UPDATE tim SET status = 'BERMAIN' WHERE user_id = ?", [
         tim1,
       ]);
 
       const [game_session] = await db.execute(
-        "INSERT INTO game_session (`pos_game_id`, `tim1_id`, `start_time`, `score1`) VALUES (?, ?, NOW(), 0)",
-        [pos[0].id, tim1]
+        "INSERT INTO game_session (`penpos_id`, `tim_id1`, `start_time`, `score1`) VALUES (?, ?, NOW(), 0)",
+        [pos[0].penpos_id, tim1]
       );
 
       if (game_session.length === 0) {

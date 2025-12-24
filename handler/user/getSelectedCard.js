@@ -30,35 +30,30 @@ export const getSelectedCard = async (req, res) => {
     const { game_session_id, card1, card2 } = req.body;
 
     const [tim] = await db.execute(
-      "SELECT tim1, tim2 FROM game_session WHERE id = ?",
+      "SELECT tim_id1, tim_id2 FROM game_session WHERE id = ?",
       [game_session_id]
     );
 
-    const result = checkBattleResult(tim[0].tim1, card1, tim[0].tim2, card2);
+    const result = checkBattleResult(
+      tim[0].tim_id1,
+      card1,
+      tim[0].tim_id2,
+      card2
+    );
 
-    if (userId === tim[0].tim1) {
-      await db.execute(
-        `UPDATE card SET ${card1} = ${card1} - 1 where user_id = ?`,
-        [tim[0].tim1]
-      );
-
-      await db.execute(
-        `UPDATE user SET selected_card = NULL where user_id = ?`,
-        [userId]
-      );
+    if (userId === tim[0].tim_id1) {
+      await db.execute(`UPDATE user SET selected_card = NULL where id = ?`, [
+        userId,
+      ]);
 
       return res.status(200).json({
         success: true,
         message: "Berhasil mendapatkan kartu terpilih!",
         data: result,
       });
-    } else if (userId === tim[0].tim2) {
+    } else if (userId === tim[0].tim_id2) {
       await db.execute(
-        `UPDATE card SET ${card2} = ${card2} - 1 where user_id = ?`,
-        [tim[0].tim2]
-      );
-      await db.execute(
-        `UPDATE user SET selected_card = NULL where user_id = ?`,
+        `UPDATE user SET selected_card = NULL where id = ?`,
         [userId]
       );
       return res.status(200).json({

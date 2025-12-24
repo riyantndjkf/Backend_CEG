@@ -27,11 +27,11 @@ export const getCard = async (req, res) => {
       });
     }
 
-    const { game_session_id, pos_game_id } = req.body;
+    const { game_session_id, penpos_id } = req.body;
 
     const [findGameSession] = await db.execute(
-      "SELECT tim1_id, tim2_id FROM game_session WHERE id = ? && pos_game_id = ? && end_time IS NULL",
-      [game_session_id, pos_game_id]
+      "SELECT tim_id1, tim_id2 FROM game_session WHERE id = ? && penpos_id = ? && end_time IS NULL",
+      [game_session_id, penpos_id]
     );
 
     if (findGameSession.length === 0) {
@@ -41,11 +41,11 @@ export const getCard = async (req, res) => {
       });
     }
 
-    const { tim1_id, tim2_id } = findGameSession[0];
+    const { tim_id1, tim_id2 } = findGameSession[0];
 
     const [cards] = await db.execute(
-      "SELECT asam_kuat, asam_lemah, netral, basa_kuat, basa_lemah FROM card WHERE user_id IN (?, ?)",
-      [tim1_id, tim2_id]
+      "SELECT asam_kuat, asam_lemah, netral, basa_kuat, basa_lemah FROM card WHERE tim_user_id IN (?, ?)",
+      [tim_id1, tim_id2]
     );
 
     if (cards.length === 0) {
@@ -61,9 +61,9 @@ export const getCard = async (req, res) => {
       success: true,
       message: "Berhasil mendapatkan kartu awal!",
       data: {
-        tim1: tim1_id,
+        tim1: tim_id1,
         card_tim1: cards1,
-        tim2: tim2_id,
+        tim2: tim_id2,
         card_tim2: cards2,
       },
     });

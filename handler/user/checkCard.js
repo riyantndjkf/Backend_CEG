@@ -52,8 +52,8 @@ export const checkBattleResult = (tim1, card1, tim2, card2) => {
 
   return {
     tim1: tim1,
-    card1: resultCard1,
+    result1: resultCard1,
     tim2: tim2,
-    card2: resultCard2,
+    result2: resultCard2,
   };
 };

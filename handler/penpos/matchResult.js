@@ -37,7 +37,7 @@ export const matchResult = async (req, res) => {
     }
 
     const [checkStatus] = await db.execute(
-      "SELECT p.tipe FROM dbceg.game_session g INNER JOIN pos_game p ON p.id = g.pos_game_id WHERE g.id = ?",
+      "SELECT p.tipe FROM game_session g INNER JOIN pos_game p ON p.penpos_id = g.pos_game_id WHERE g.id = ?",
       [game_session_id]
     );
 
@@ -56,12 +56,12 @@ export const matchResult = async (req, res) => {
       );
 
       await db.execute(
-        "UPDATE user SET total_points = total_points + 5 WHERE id = ?",
+        "UPDATE tim SET total_points = total_points + 5 WHERE user_id = ?",
         [tim_menang]
       );
 
       await db.execute(
-        "UPDATE user SET total_points = total_points + 1 WHERE id = ?",
+        "UPDATE tim SET total_points = total_points + 1 WHERE user_id = ?",
         [tim_kalah]
       );
 
@@ -88,12 +88,16 @@ export const matchResult = async (req, res) => {
         [game_session_id]
       );
 
-      if (result) {
-        "UPDATE user SET total_points = total_points + 5 WHERE id = ?",
-          [tim_id];
+      if (result === true) {
+        await db.execute(
+          "UPDATE tim SET total_points = total_points + 5 WHERE user_id = ?",
+          [tim_id]
+        );
       } else if (result === false) {
-        "UPDATE user SET total_points = total_points + 1 WHERE id = ?",
-          [tim_id];
+        await db.execute(
+          "UPDATE tim SET total_points = total_points + 1 WHERE user_id = ?",
+          [tim_id]
+        );
       }
 
       res.status(200).json({

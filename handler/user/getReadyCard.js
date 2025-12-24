@@ -29,10 +29,8 @@ export const getReadyCard = async (req, res) => {
 
     const { game_session_id, card } = req.body;
 
-    await card;
-
     const [session] = await db.execute(
-      "SELECT tim1, tim2 FROM game_session WHERE id = ?",
+      "SELECT tim_id1, tim_id2 FROM game_session WHERE id = ?",
       [game_session_id]
     );
 
@@ -44,18 +42,18 @@ export const getReadyCard = async (req, res) => {
     }
 
     await db.execute(
-      `UPDATE card SET ${card} = ${card} - 1 where user_id = ?`,
+      `UPDATE card SET ${card} = ${card} - 1 where tim_user_id = ?`,
       [userId]
     );
 
-    await db.execute(`UPDATE user SET selected_card = ? where user_id = ?`, [
+    await db.execute(`UPDATE user SET selected_card = ? where id = ?`, [
       card,
       userId,
     ]);
 
     const [cards] = await db.execute(
-      "SELECT selected_card FROM user WHERE user_id IN (?, ?)",
-      [session[0].tim1, session[0].tim2]
+      "SELECT selected_card FROM user WHERE id IN (?, ?)",
+      [session[0].tim_id1, session[0].tim_id2]
     );
 
     return res.status(200).json({

@@ -27,7 +27,7 @@ export const exitWaitingRoom = async (req, res) => {
       });
     }
     await db.execute(
-      "UPDATE tim SET pos_game_id = NULL, status = 'KOSONG' WHERE id = ?",
+      "UPDATE tim SET pos_game_id = NULL, status = 'KOSONG' WHERE user_id = ?",
       [userId]
     );
     return res.status(200).json({
