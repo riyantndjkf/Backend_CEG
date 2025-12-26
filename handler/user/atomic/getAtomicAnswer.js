@@ -1,7 +1,7 @@
 import db from "../../../config/database.js";
 import { checkToken } from "../../../config/checkToken.js";
 
-export const getSortAnswer = async (req, res) => {
+export const getAtomicAnswer = async (req, res) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -28,6 +28,7 @@ export const getSortAnswer = async (req, res) => {
     }
 
     const { game_session_id, answer } = req.body;
+    const page = req.query.page || 1;
 
     if (!game_session_id || !Array.isArray(answer)) {
       return res.status(400).json({
@@ -51,12 +52,16 @@ export const getSortAnswer = async (req, res) => {
     const session = gameSession[0];
 
     const [correctAnswers] = await db.execute(
-      "SELECT urutan, alat_bahan_id as id_barang FROM alat_bahan_terpilih"
+      "SELECT kotak AS urutan, bahan_molekul_id AS id_barang FROM bahan_molekul_has_soal_molekul WHERE soal_molekul_id = ?",
+      [page]
     );
 
     const correctMap = new Map();
 
+    let realCount = 0;
+
     for (const item of correctAnswers) {
+      realCount++;
       correctMap.set(item.urutan, item.id_barang);
     }
 
@@ -68,32 +73,44 @@ export const getSortAnswer = async (req, res) => {
       }
     }
 
-    if (session.tim_id1 === userId) {
-      await db.execute(
-        "UPDATE game_session SET score1 = score1 + ? WHERE id = ?",
-        [correctCount, game_session_id]
-      );
-    } else if (session.tim_id2 === userId) {
-      await db.execute(
-        "UPDATE game_session SET score2 = score2 + ? WHERE id = ?",
-        [correctCount, game_session_id]
-      );
+    if (correctCount === realCount && correctCount !== 0) {
+      if (session.tim_id1 === userId) {
+        await db.execute(
+          "UPDATE game_session SET score1 = score1 + ? WHERE id = ?",
+          [correctCount, game_session_id]
+        );
+      } else if (session.tim_id2 === userId) {
+        await db.execute(
+          "UPDATE game_session SET score2 = score2 + ? WHERE id = ?",
+          [correctCount, game_session_id]
+        );
+      } else {
+        return res.status(403).json({
+          success: false,
+          message: "User bukan bagian dari game session ini",
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: "Jawaban benar semua!",
+        data: {
+          kunci_benar: realCount,
+          total_benar: correctCount,
+        },
+      });
     } else {
-      return res.status(403).json({
-        success: false,
-        message: "User bukan bagian dari game session ini",
+      return res.status(200).json({
+        success: true,
+        message: "Cek jawaban lagi",
+        data: {
+          kunci_benar: realCount,
+          total_benar: correctCount,
+        },
       });
     }
-
-    return res.status(200).json({
-      success: true,
-      message: "Jawaban diproses",
-      data: {
-        total_benar: correctCount,
-      },
-    });
   } catch (error) {
-    console.error("ERROR GET SORT ANSWER:", error);
+    console.error("Error in getAtomicAnswer:", error);
     return res.status(500).json({
       success: false,
       message: "Terjadi kesalahan server: " + error.message,

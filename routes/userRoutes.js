@@ -7,6 +7,9 @@ import { exitWaitingRoom } from "../handler/user/pos/exitWaitingRoom.js";
 import { checkAcc } from "../handler/user/pos/checkAcc.js";
 import { getUserInfo } from "../handler/user/getUserInfo.js";
 import { getSortItems } from "../handler/user/sort/getSortItems.js";
+import { getSortAnswer } from "../handler/user/sort/getSortAnswer.js";
+import { getAtomicItems } from "../handler/user/atomic/getAtomicItems.js";
+import { getAtomicAnswer } from "../handler/user/atomic/getAtomicAnswer.js";
 import express from "express";
 
 const router = express.Router();
@@ -20,5 +23,8 @@ router.get("/check-acc", checkAcc);
 router.get("/exit-waiting-room", exitWaitingRoom);
 router.get("/get-user-info", getUserInfo);
 router.get("/sort/get-sort-items", getSortItems);
+router.post("/sort/get-sort-answer", getSortAnswer);
+router.get("/atomic/get-atomic-items", getAtomicItems);
+router.post("/atomic/get-atomic-answer", getAtomicAnswer);
 
 export default router;

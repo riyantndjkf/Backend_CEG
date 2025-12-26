@@ -1,7 +1,7 @@
 import db from "../../../config/database.js";
 import { checkToken } from "../../../config/checkToken.js";
 
-export const getSortItems = async (req, res) => {
+export const getAtomicItems = async (req, res) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -27,7 +27,9 @@ export const getSortItems = async (req, res) => {
       });
     }
 
-    const [items] = await db.execute("SELECT * FROM alat_bahan");
+    const page = req.query.page || 1;
+
+    const [items] = await db.execute("SELECT * FROM bahan_molekul");
 
     if (items.length === 0) {
       return res.status(404).json({
@@ -36,7 +38,10 @@ export const getSortItems = async (req, res) => {
       });
     }
 
-    const [questions] = await db.execute("SELECT * FROM question");
+    const [questions] = await db.execute(
+      "SELECT * FROM soal_molekul WHERE id = ?",
+      [page]
+    );
 
     if (questions.length === 0) {
       return res.status(404).json({
