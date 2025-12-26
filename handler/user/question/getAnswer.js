@@ -1,7 +1,7 @@
 import db from "../../../config/database.js";
 import { checkToken } from "../../../config/checkToken.js";
 
-export const getSortItems = async (req, res) => {
+export const getAnswer = async (req, res) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -27,12 +27,13 @@ export const getSortItems = async (req, res) => {
       });
     }
 
-    const { game_session_id } = req.body;
+    const { game_session_id, answer } = req.body;
+    const page = req.query.page || 1;
 
-    if (!game_session_id) {
+    if (!game_session_id || !answer) {
       return res.status(400).json({
         success: false,
-        message: "Game session ID is required.",
+        message: "game_session_id dan answer wajib dikirim",
       });
     }
 
@@ -48,33 +49,46 @@ export const getSortItems = async (req, res) => {
       });
     }
 
-    const [items] = await db.execute("SELECT * FROM alat_bahan");
+    const session = gameSession[0];
 
-    if (items.length === 0) {
+    const [correctAnswers] = await db.execute(
+      "SELECT jawaban_benar FROM soal WHERE id = ?",
+      [page]
+    );
+
+    if (correctAnswers.length === 0) {
       return res.status(404).json({
         success: false,
-        message: "No items found.",
+        message: "No correct answers found.",
       });
     }
 
-    const [questions] = await db.execute("SELECT * FROM question");
+    if (correctAnswers[0].jawaban_benar === answer) {
+      if (session.tim_id1 === userId) {
+        await db.execute(
+          "UPDATE game_session SET score1 = score1 + 1 WHERE id = ?",
+          [game_session_id]
+        );
+      } else if (session.tim_id2 === userId) {
+        await db.execute(
+          "UPDATE game_session SET score2 = score2 + 1 WHERE id = ?",
+          [game_session_id]
+        );
+      }
 
-    if (questions.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "No questions found.",
+      return res.status(200).json({
+        success: true,
+        message: "Jawaban Anda benar!",
+      });
+    } else {
+      return res.status(200).json({
+        success: true,
+        message: "Jawaban Anda salah!",
+        data: correctAnswers[0].jawaban_benar,
       });
     }
-
-    res.status(200).json({
-      success: true,
-      data: {
-        questions,
-        items,
-      },
-    });
   } catch (error) {
-    console.error("Error in getSortItems:", error);
+    console.error("Error in getAtomicAnswer:", error);
     return res.status(500).json({
       success: false,
       message: "Terjadi kesalahan server: " + error.message,

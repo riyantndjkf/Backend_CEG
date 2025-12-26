@@ -28,6 +28,26 @@ export const getAtomicItems = async (req, res) => {
     }
 
     const page = req.query.page || 1;
+    const { game_session_id } = req.body;
+
+    if (!game_session_id) {
+      return res.status(400).json({
+        success: false,
+        message: "Game session ID is required.",
+      });
+    }
+
+    const [gameSession] = await db.execute(
+      "SELECT * FROM game_session WHERE id = ? AND end_time IS NULL",
+      [game_session_id]
+    );
+
+    if (gameSession.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Game session tidak ditemukan atau sudah selesai",
+      });
+    }
 
     const [items] = await db.execute("SELECT * FROM bahan_molekul");
 

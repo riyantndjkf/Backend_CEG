@@ -1,7 +1,7 @@
 import db from "../../../config/database.js";
 import { checkToken } from "../../../config/checkToken.js";
 
-export const getSortItems = async (req, res) => {
+export const getQuestion = async (req, res) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -27,6 +27,8 @@ export const getSortItems = async (req, res) => {
       });
     }
 
+    const page = req.query.page || 1;
+
     const { game_session_id } = req.body;
 
     if (!game_session_id) {
@@ -48,16 +50,9 @@ export const getSortItems = async (req, res) => {
       });
     }
 
-    const [items] = await db.execute("SELECT * FROM alat_bahan");
-
-    if (items.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "No items found.",
-      });
-    }
-
-    const [questions] = await db.execute("SELECT * FROM question");
+    const [questions] = await db.execute("SELECT * FROM soal WHERE id = ?", [
+      page,
+    ]);
 
     if (questions.length === 0) {
       return res.status(404).json({
@@ -70,11 +65,10 @@ export const getSortItems = async (req, res) => {
       success: true,
       data: {
         questions,
-        items,
       },
     });
   } catch (error) {
-    console.error("Error in getSortItems:", error);
+    console.error("ERROR GET QUESTION:", error);
     return res.status(500).json({
       success: false,
       message: "Terjadi kesalahan server: " + error.message,

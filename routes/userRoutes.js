@@ -10,6 +10,9 @@ import { getSortItems } from "../handler/user/sort/getSortItems.js";
 import { getSortAnswer } from "../handler/user/sort/getSortAnswer.js";
 import { getAtomicItems } from "../handler/user/atomic/getAtomicItems.js";
 import { getAtomicAnswer } from "../handler/user/atomic/getAtomicAnswer.js";
+import { getAnswer } from "../handler/user/question/getAnswer.js";
+import { getQuestion } from "../handler/user/question/getQuestion.js";
+
 import express from "express";
 
 const router = express.Router();
@@ -22,9 +25,11 @@ router.post("/abn/get-selected-card", getSelectedCard);
 router.get("/check-acc", checkAcc);
 router.get("/exit-waiting-room", exitWaitingRoom);
 router.get("/get-user-info", getUserInfo);
-router.get("/sort/get-sort-items", getSortItems);
+router.post("/sort/get-sort-items", getSortItems);
 router.post("/sort/get-sort-answer", getSortAnswer);
-router.get("/atomic/get-atomic-items", getAtomicItems);
+router.post("/atomic/get-atomic-items", getAtomicItems);
 router.post("/atomic/get-atomic-answer", getAtomicAnswer);
+router.post("/question/get-question", getQuestion);
+router.post("/question/get-answer", getAnswer);
 
 export default router;
