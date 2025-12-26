@@ -7,11 +7,8 @@ import express from "express";
 const router = express.Router();
 
 router.get("/get-pos", getPos);
-
 router.get("/get-list-team", getListTeam);
-
 router.post("/create-game-session", createGameSession);
-
 router.post("/match-result", matchResult);
 
 export default router;

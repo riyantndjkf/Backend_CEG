@@ -1,5 +1,5 @@
-import db from "../../config/database.js";
-import { checkToken } from "../../config/checkToken.js";
+import db from "../../../config/database.js";
+import { checkToken } from "../../../config/checkToken.js";
 
 export const getSelectedCard = async (req, res) => {
   try {
@@ -52,10 +52,9 @@ export const getSelectedCard = async (req, res) => {
         data: result,
       });
     } else if (userId === tim[0].tim_id2) {
-      await db.execute(
-        `UPDATE user SET selected_card = NULL where id = ?`,
-        [userId]
-      );
+      await db.execute(`UPDATE user SET selected_card = NULL where id = ?`, [
+        userId,
+      ]);
       return res.status(200).json({
         success: true,
         message: "Berhasil mendapatkan kartu terpilih!",
