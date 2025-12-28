@@ -12,8 +12,12 @@ import { getAtomicItems } from "../handler/user/atomic/getAtomicItems.js";
 import { getAtomicAnswer } from "../handler/user/atomic/getAtomicAnswer.js";
 import { getAnswer } from "../handler/user/question/getAnswer.js";
 import { getQuestion } from "../handler/user/question/getQuestion.js";
+import { getCPTools } from "../handler/user/cpbattle/getCPTools.js";
+import { getCPQuestion } from "../handler/user/cpbattle/getCPQuestion.js";
+import { getCPAnswer } from "../handler/user/cpbattle/getCPAnswer.js";
 
 import express from "express";
+import { getCPQuestion } from "../handler/user/cpbattle/getCPQuestion.js";
 
 const router = express.Router();
 
@@ -31,5 +35,8 @@ router.post("/atomic/get-atomic-items", getAtomicItems);
 router.post("/atomic/get-atomic-answer", getAtomicAnswer);
 router.post("/question/get-question", getQuestion);
 router.post("/question/get-answer", getAnswer);
+router.post("/cpbattle/get-cp-tools", getCPTools);
+router.post("/cpbattle/get-cp-question", getCPQuestion);
+router.post("/cpbattle/get-cp-answer", getCPAnswer);
 
 export default router;
