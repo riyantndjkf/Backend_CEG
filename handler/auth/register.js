@@ -5,8 +5,10 @@ export const register = async (req, res) => {
   const connection = await db.getConnection(); 
 
   try {
-    // 1. TANGKAP DATA DARI FORM DATA
-    // Karena pakai Multer, req.body berisi text, req.files berisi file
+
+    console.log("CEK BODY:", req.body);
+    console.log("CEK FILES:", req.files);
+    
     const {
       nama_tim, password, email, asal_sekolah, no_wa, id_line,
       kategori_biaya, paket, members: membersString
