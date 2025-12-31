@@ -5,15 +5,15 @@ export const getAllTeams = async (req, res) => {
     // Query: Ambil data tim + Hitung jumlah member per tim
     const [teams] = await db.execute(`
       SELECT 
-        t.id, 
+        t.user_id, 
         t.nama_tim, 
         t.asal_sekolah, 
         t.status_pembayaran,
         COUNT(m.id) as jumlah_anggota
       FROM tim t
-      LEFT JOIN member m ON t.id = m.tim_id
-      GROUP BY t.id
-      ORDER BY t.id DESC
+      LEFT JOIN member m ON t.user_id = m.tim_user_id
+      GROUP BY t.user_id
+      ORDER BY t.user_id DESC
     `);
 
     return res.status(200).json({
