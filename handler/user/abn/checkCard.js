@@ -42,7 +42,7 @@ const reverseResult = (result) => {
   return "seri";
 };
 
-export const checkBattleResult = (tim1, card1, tim2, card2) => {
+const checkBattleResult = (tim1, card1, tim2, card2) => {
   if (!battleTable[card1] || !battleTable[card1][card2]) {
     throw new Error("Jenis kartu tidak valid");
   }
@@ -57,3 +57,5 @@ export const checkBattleResult = (tim1, card1, tim2, card2) => {
     result2: resultCard2,
   };
 };
+
+export default checkBattleResult;
