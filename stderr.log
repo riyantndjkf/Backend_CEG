@@ -2053,3 +2053,91 @@ ERROR GET USER INFO: Error: Unknown column 't.total_points' in 'SELECT'
   sqlState: '42S22',
   sqlMessage: "Unknown column 't.total_points' in 'SELECT'"
 }
+ERROR CHECK ACC: TypeError: Cannot read properties of null (reading 'id')
+    at checkAcc (file:///home/cegubaya/Backend_CEG/handler/user/pos/checkAcc.js:15:28)
+    at Layer.handleRequest (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/layer.js:152:17)
+    at next (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/route.js:117:3)
+    at handle (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/layer.js:152:17)
+    at /home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:295:15
+    at processParams (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:582:12)
+    at next (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:291:5)
+    at Function.handle (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:186:3)
+TypeError: db.rollback is not a function
+    at matchResult (file:///home/cegubaya/Backend_CEG/handler/penpos/matchResult.js:193:14)
+    at Layer.handleRequest (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/layer.js:152:17)
+    at next (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/route.js:117:3)
+    at handle (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/layer.js:152:17)
+    at /home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:295:15
+    at processParams (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:582:12)
+    at next (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:291:5)
+    at Function.handle (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:186:3)
+TypeError: db.rollback is not a function
+    at matchResult (file:///home/cegubaya/Backend_CEG/handler/penpos/matchResult.js:193:14)
+    at Layer.handleRequest (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/layer.js:152:17)
+    at next (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/route.js:117:3)
+    at handle (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/layer.js:152:17)
+    at /home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:295:15
+    at processParams (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:582:12)
+    at next (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:291:5)
+    at Function.handle (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:186:3)
+TypeError: db.rollback is not a function
+    at matchResult (file:///home/cegubaya/Backend_CEG/handler/penpos/matchResult.js:193:14)
+    at Layer.handleRequest (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/layer.js:152:17)
+    at next (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/route.js:117:3)
+    at handle (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/layer.js:152:17)
+    at /home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:295:15
+    at processParams (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:582:12)
+    at next (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:291:5)
+    at Function.handle (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:186:3)
+TypeError: db.rollback is not a function
+    at matchResult (file:///home/cegubaya/Backend_CEG/handler/penpos/matchResult.js:193:14)
+    at Layer.handleRequest (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/layer.js:152:17)
+    at next (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/route.js:117:3)
+    at handle (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/layer.js:152:17)
+    at /home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:295:15
+    at processParams (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:582:12)
+    at next (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:291:5)
+    at Function.handle (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:186:3)
+TypeError: db.rollback is not a function
+    at matchResult (file:///home/cegubaya/Backend_CEG/handler/penpos/matchResult.js:193:14)
+    at Layer.handleRequest (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/layer.js:152:17)
+    at next (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/route.js:117:3)
+    at handle (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/layer.js:152:17)
+    at /home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:295:15
+    at processParams (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:582:12)
+    at next (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:291:5)
+    at Function.handle (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:186:3)
+TypeError: db.rollback is not a function
+    at matchResult (file:///home/cegubaya/Backend_CEG/handler/penpos/matchResult.js:193:14)
+    at Layer.handleRequest (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/layer.js:152:17)
+    at next (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/route.js:117:3)
+    at handle (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/layer.js:152:17)
+    at /home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:295:15
+    at processParams (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:582:12)
+    at next (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:291:5)
+    at Function.handle (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:186:3)
+TypeError: db.rollback is not a function
+    at matchResult (file:///home/cegubaya/Backend_CEG/handler/penpos/matchResult.js:193:14)
+    at Layer.handleRequest (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/layer.js:152:17)
+    at next (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/route.js:117:3)
+    at handle (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/lib/layer.js:152:17)
+    at /home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:295:15
+    at processParams (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:582:12)
+    at next (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:291:5)
+    at Function.handle (/home/cegubaya/nodevenv/Backend_CEG/20/lib/node_modules/router/index.js:186:3)
